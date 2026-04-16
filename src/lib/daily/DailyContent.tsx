@@ -281,6 +281,36 @@ export default function DailyContent({
 
       {/* Main content */}
       <div className="daily-main">
+        {/* 移动端横向日期导航（桌面端隐藏） */}
+        {tabDates && currentDate && (
+          <div className="daily-date-strip">
+            {tabDates.map(date => {
+              const isActive = date === currentDate
+              const today = new Date()
+              const yesterday = new Date(Date.now() - 86400000)
+              const dayBefore = new Date(Date.now() - 2 * 86400000)
+              const fmt = (d: Date) => `${d.getMonth() + 1}月${d.getDate()}日`
+              const todayStr = today.toISOString().slice(0, 10)
+              const yestStr = yesterday.toISOString().slice(0, 10)
+              const dayBStr = dayBefore.toISOString().slice(0, 10)
+              let label = fmt(new Date(date))
+              if (date === todayStr) label = '今天'
+              else if (date === yestStr) label = '昨天'
+              else if (date === dayBStr) label = '前天'
+              return (
+                <Link
+                  key={date}
+                  href={`/daily?date=${date}`}
+                  replace
+                  className={`daily-date-tab ${isActive ? 'active' : ''}`}
+                >
+                  {label}
+                </Link>
+              )
+            })}
+          </div>
+        )}
+
         {sections.map(section => {
           const meta = SECTIONS.find(s => s.key === section.key)
           if (!meta) return null
