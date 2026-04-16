@@ -781,23 +781,29 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-sm);
 }
 
+.daily-section-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0;
+}
+
 .daily-sidebar-label {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   margin-bottom: 10px;
-  padding: 0 8px;
+  padding: 0 12px;
 }
 
 .daily-sidebar-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 10px;
+  padding: 10px 12px;
   border-radius: var(--radius-md);
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
@@ -878,22 +884,22 @@ img { max-width: 100%; display: block; }
 
 /* ── 正文排版 ──────────────────────────────────────────── */
 .daily-section-body {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   line-height: 1.85;
   color: var(--text-secondary);
 }
 
 .daily-h3 {
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin: 22px 0 10px;
+  margin: 24px 0 12px;
   padding: 0;
 }
 
 .daily-p {
-  margin: 0 0 12px;
-  line-height: 1.85;
+  margin: 0 0 14px;
+  line-height: 1.9;
 }
 
 .daily-p:last-child { margin-bottom: 0; }
