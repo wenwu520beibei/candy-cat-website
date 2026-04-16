@@ -1028,6 +1028,9 @@ img { max-width: 100%; display: block; }
   .navbar-nav { gap: 2px; }
   .nav-icon-only { padding: 8px 10px !important; }
 
+  /* footer 不换行 */
+  .daily-footer { flex-wrap: nowrap; white-space: nowrap; gap: 8px; font-size: 0.72rem; }
+
   /* 日报布局 - 移动端：侧边栏隐藏，日期导航独立成横向条 */
   .daily-sidebar {
     display: none;
@@ -1050,6 +1053,8 @@ img { max-width: 100%; display: block; }
   padding: 16px;
   font-size: 0.78rem;
   color: var(--text-muted);
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 /* ── 简历页 ─────────────────────────────────────────────────── */
