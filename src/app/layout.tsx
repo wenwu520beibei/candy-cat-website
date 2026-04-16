@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: '🍬 糖果猫猫',
-  description: '智能情报与内容管理中枢',
-  icons: { icon: '🐱' },
+  title: '智能情报与内容中枢',
+  description: 'AI日报 · 多源情报聚合 · 每日更新',
+  icons: { icon: '📊' },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -13,7 +13,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <Navbar />
         {children}
-        <div className="cat-deco" aria-hidden="true">🐱</div>
       </body>
     </html>
   )
@@ -24,8 +23,8 @@ function Navbar() {
     <header className="navbar">
       <div className="navbar-inner">
         <a href="/" className="navbar-brand">
-          <span className="brand-icon">🍬</span>
-          <span className="brand-text">糖果猫猫</span>
+          <span className="brand-icon">📊</span>
+          <span className="brand-text">智能中枢</span>
         </a>
 
         <nav>
