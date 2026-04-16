@@ -86,9 +86,7 @@ export default async function DailyPage({ searchParams }: PageProps) {
         <div className="daily-footer">
           <span>📡 数据来源：BuilderPulse</span>
           <span>·</span>
-          <span>🕐 获取时间：{new Date(report.fetchedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</span>
-          <span>·</span>
-          <span>📍 实时抓取</span>
+          <span>🕐 {new Date(report.fetchedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</span>
         </div>
       </div>
     </main>
