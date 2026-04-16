@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: '🍬 Hermes 管理台',
-  description: '糖果猫猫的 Hermes 信息中枢',
+  title: '🍬 糖果猫猫',
+  description: '智能情报与内容管理中枢',
   icons: { icon: '🐱' },
 }
 
@@ -25,16 +25,23 @@ function Navbar() {
       <div className="navbar-inner">
         <a href="/" className="navbar-brand">
           <span className="brand-icon">🍬</span>
-          <span className="brand-text">Hermes 管理台</span>
+          <span className="brand-text">糖果猫猫</span>
         </a>
 
         <nav>
           <ul className="navbar-nav">
-            <li><a href="/" className="nav-link">🏠 总览</a></li>
-            <li><a href="/sources" className="nav-link">🔌 信源</a></li>
-            <li><a href="/reports" className="nav-link">📝 日报</a></li>
+            <li><a href="/" className="nav-link">🏠 首页</a></li>
+            <li><a href="/dashboard" className="nav-link">📊 AI日报</a></li>
             <li><a href="/wechat" className="nav-link">📮 公众号</a></li>
-            <li><a href="/settings" className="nav-link">⚙️ 配置</a></li>
+            <li className="nav-dropdown">
+              <span className="nav-link nav-link-dropdown">👤 我的 ▾</span>
+              <div className="dropdown-menu">
+                <a href="/resume" className="dropdown-item">📄 个人简历</a>
+                <a href="/sources" className="dropdown-item">🔌 信源配置</a>
+                <a href="/reports" className="dropdown-item">📝 日报历史</a>
+                <a href="/settings" className="dropdown-item">⚙️ 系统设置</a>
+              </div>
+            </li>
           </ul>
         </nav>
       </div>

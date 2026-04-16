@@ -175,6 +175,54 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-sm);
 }
 
+/* ── 下拉菜单 ─────────────────────────────────────────────── */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-link-dropdown {
+  cursor: pointer;
+  user-select: none;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 180px;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 8px;
+  z-index: 300;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-dropdown:hover .dropdown-menu {
+  display: flex;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s var(--ease-out);
+}
+
+.dropdown-item:hover {
+  background: var(--pink-50);
+  color: var(--pink-500);
+}
+
 /* ── 页面主体 ──────────────────────────────────────────────── */
 .page {
   padding: 40px 0 80px;
