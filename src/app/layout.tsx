@@ -33,7 +33,7 @@ function Navbar() {
         <nav>
           <ul className="navbar-nav">
             <li><a href="/" className="nav-link">🏠 首页</a></li>
-            <li><a href="/dashboard" className="nav-link">📊 AI日报</a></li>
+            <li><a href="/daily" className="nav-link">📊 AI日报</a></li>
             <li><a href="/wechat" className="nav-link">📮 公众号</a></li>
             <li className="nav-dropdown">
               <span className="nav-link nav-link-dropdown">👤 我的 ▾</span>

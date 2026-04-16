@@ -37,7 +37,7 @@ export default function HomePage() {
             </p>
 
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link href="/dashboard" className="btn btn-primary" style={{ padding: '11px 28px', fontSize: '0.95rem' }}>
+              <Link href="/daily" className="btn btn-primary" style={{ padding: '11px 28px', fontSize: '0.95rem' }}>
                 📊 进入日报
                 <ChevronRight size={16} />
               </Link>
@@ -52,7 +52,7 @@ export default function HomePage() {
         <section style={{ paddingBottom: 64 }}>
           <div className="grid-2" style={{ gap: 24 }}>
             {/* AI 日报卡片 */}
-            <Link href="/dashboard" style={{ textDecoration: 'none', cursor: 'pointer' }}>
+            <Link href="/daily" style={{ textDecoration: 'none', cursor: 'pointer' }}>
               <div className="card violet-card" style={{ padding: '40px 36px', borderRadius: 20 }}>
                 <div className="card-icon">📊</div>
                 <div className="card-title-accent">AI 日报</div>
