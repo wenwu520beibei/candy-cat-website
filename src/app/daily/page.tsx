@@ -1,7 +1,5 @@
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import { fetchReport, formatDate, getDatesRange } from '@/lib/daily/fetcher'
-import { getReport, saveReport, getAvailableDates } from '@/lib/daily/db'
 import BuilderPulseRenderer from '@/lib/daily/renderer'
 import DateTabs from '@/components/DateTabs'
 
@@ -26,42 +24,31 @@ export default async function DailyPage({ searchParams }: PageProps) {
     targetDate = today
   }
 
-  // Try DB first
-  let report = getReport(targetDate)
-  let source = 'db' as 'db' | 'github'
-  let fetchedDate = targetDate
+  let report: { date: string; content: string; fetchedAt: string } | null = null
   let isFallback = false
 
-  if (!report) {
-    // Fetch from GitHub
-    const { content, found } = await fetchReport(targetDate)
+  // Try today's date first
+  const { content: todayContent, found: todayFound } = await fetchReport(targetDate)
 
-    if (found && content) {
-      saveReport(targetDate, content)
-      report = { date: targetDate, content, fetched_at: new Date().toISOString() }
-      source = 'github'
-    } else if (targetDate === today) {
-      // Today not found — try yesterday, then day before, up to 6 days back
-      const dates = getDatesRange(7).filter(d => d !== today)
-      for (const d of dates) {
-        const { content: c, found: f } = await fetchReport(d)
-        if (f && c) {
-          saveReport(d, c)
-          report = { date: d, content: c, fetched_at: new Date().toISOString() }
-          fetchedDate = d
-          source = 'github'
-          isFallback = true
-          break
-        }
+  if (todayFound && todayContent) {
+    report = { date: targetDate, content: todayContent, fetchedAt: new Date().toISOString() }
+  } else {
+    // Today not found — try yesterday, then day before, up to 6 days back
+    const dates = getDatesRange(7).filter(d => d !== targetDate)
+    for (const d of dates) {
+      const { content: c, found: f } = await fetchReport(d)
+      if (f && c) {
+        report = { date: d, content: c, fetchedAt: new Date().toISOString() }
+        isFallback = d !== today
+        break
       }
     }
   }
 
-  // Get available dates for tabs
-  const availableDates = getAvailableDates(7)
+  // Generate available dates for tabs (today + last 6 days)
+  const tabDates = getDatesRange(7)
 
   if (!report) {
-    // No reports at all
     return (
       <main className="page">
         <div className="container">
@@ -94,29 +81,24 @@ export default async function DailyPage({ searchParams }: PageProps) {
             每日情报
           </h1>
           {isFallback && (
-            <p className="page-subtitle" style={{ color: 'var(--amber)' }}>
-              ⚠️ 今天的报告尚未发布，显示的是 {fetchedDate} 的最新报告
+            <p className="page-subtitle" style={{ color: 'var(--amber)', fontSize: '0.85rem', paddingLeft: 0 }}>
+              ⚠️ 今天的报告尚未发布，显示的是 {report.date} 的最新报告
             </p>
           )}
         </div>
 
-        <DateTabs availableDates={availableDates} currentDate={fetchedDate} />
+        <DateTabs availableDates={tabDates} currentDate={report.date} />
 
         <div className="daily-report-wrapper">
-          {isFallback && fetchedDate !== targetDate && (
-            <div className="badge badge-warn" style={{ marginBottom: '16px', display: 'inline-flex' }}>
-              ⚠️ 自动降级显示
-            </div>
-          )}
           <BuilderPulseRenderer content={report.content} />
         </div>
 
         <div className="daily-footer">
           <span>📡 数据来源：BuilderPulse</span>
           <span>·</span>
-          <span>🕐 获取时间：{new Date(report.fetched_at).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</span>
+          <span>🕐 获取时间：{new Date(report.fetchedAt).toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' })}</span>
           <span>·</span>
-          <span>📍 {source === 'github' ? '实时抓取' : '数据库'}</span>
+          <span>📍 实时抓取</span>
         </div>
       </div>
     </main>

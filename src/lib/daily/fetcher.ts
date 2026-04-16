@@ -1,15 +1,24 @@
 const BUILDERPULSE_RAW = 'https://raw.githubusercontent.com/BuilderPulse/BuilderPulse/main/zh/2026'
 
+// In-memory cache for serverless (persists within a warm container)
+const memoryCache = new Map<string, { content: string; fetchedAt: string }>()
+
 export function getReportUrl(date: string): string {
   return `${BUILDERPULSE_RAW}/${date}.md`
 }
 
 export async function fetchReport(date: string): Promise<{ content: string; found: boolean }> {
+  // Check memory cache first
+  const cached = memoryCache.get(date)
+  if (cached) {
+    return { content: cached.content, found: true }
+  }
+
   const url = getReportUrl(date)
   try {
     const res = await fetch(url, {
       headers: { 'Accept': 'text/markdown' },
-      next: { revalidate: 0 },
+      next: { revalidate: 3600 }, // cache for 1 hour in Next.js
     })
     if (res.status === 404) {
       return { content: '', found: false }
@@ -18,6 +27,8 @@ export async function fetchReport(date: string): Promise<{ content: string; foun
       return { content: '', found: false }
     }
     const content = await res.text()
+    // Store in memory cache
+    memoryCache.set(date, { content, fetchedAt: new Date().toISOString() })
     return { content, found: true }
   } catch {
     return { content: '', found: false }
@@ -40,15 +51,4 @@ export function getDatesRange(days = 7): string[] {
     dates.push(formatDate(d))
   }
   return dates
-}
-
-export function getAdjacentDates(targetDate: string, allDates: string[]): {
-  prev: string | null
-  next: string | null
-} {
-  const idx = allDates.indexOf(targetDate)
-  return {
-    prev: idx < allDates.length - 1 ? allDates[idx + 1] : null,
-    next: idx > 0 ? allDates[idx - 1] : null,
-  }
 }

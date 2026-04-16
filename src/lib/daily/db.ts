@@ -33,23 +33,35 @@ export interface Report {
 }
 
 export function getReport(date: string): Report | null {
-  const db = getDb()
-  const row = db.prepare('SELECT * FROM reports WHERE date = ?').get(date) as Report | undefined
-  return row ?? null
+  try {
+    const db = getDb()
+    const row = db.prepare('SELECT * FROM reports WHERE date = ?').get(date) as Report | undefined
+    return row ?? null
+  } catch {
+    return null
+  }
 }
 
 export function saveReport(date: string, content: string): void {
-  const db = getDb()
-  db.prepare(`
-    INSERT OR REPLACE INTO reports (date, content, fetched_at)
-    VALUES (?, ?, ?)
-  `).run(date, content, new Date().toISOString())
+  try {
+    const db = getDb()
+    db.prepare(`
+      INSERT OR REPLACE INTO reports (date, content, fetched_at)
+      VALUES (?, ?, ?)
+    `).run(date, content, new Date().toISOString())
+  } catch {
+    // ignore
+  }
 }
 
 export function getAvailableDates(limit = 7): string[] {
-  const db = getDb()
-  const rows = db.prepare(
-    'SELECT date FROM reports ORDER BY date DESC LIMIT ?'
-  ).all(limit) as { date: string }[]
-  return rows.map(r => r.date)
+  try {
+    const db = getDb()
+    const rows = db.prepare(
+      'SELECT date FROM reports ORDER BY date DESC LIMIT ?'
+    ).all(limit) as { date: string }[]
+    return rows.map(r => r.date)
+  } catch {
+    return []
+  }
 }
