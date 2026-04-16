@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 const SECTIONS = [
   { key: 'signals',    title: '今日三大信号',    emoji: '🚨', color: 'var(--violet-500)' },
@@ -182,18 +184,23 @@ function renderInline(text: string): string {
     .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener" class="daily-link">$1</a>')
 }
 
-export default function DailyContent({ content }: { content: string }) {
+export default function DailyContent({
+  content,
+  tabDates,
+  currentDate,
+}: {
+  content: string
+  tabDates?: string[]
+  currentDate?: string
+}) {
   const sections = parseSections(content)
   const [activeId, setActiveId] = useState('signals')
   const observerRef = useRef<IntersectionObserver | null>(null)
 
-  // Build TOC — always include signals, then add whatever sections exist
-  const toc: TocItem[] = [
-    { id: 'signals', title: '今日三大信号', emoji: '🚨', color: 'var(--violet-500)' },
-    ...SECTIONS
-      .filter(s => sections.some(sec => sec.key === s.key))
-      .map(s => ({ id: s.key, title: s.title, emoji: s.emoji, color: s.color })),
-  ]
+  // Build TOC — signals NOT hardcoded; only sections that exist in SECTIONS array
+  const toc: TocItem[] = SECTIONS
+    .filter(s => sections.some(sec => sec.key === s.key))
+    .map(s => ({ id: s.key, title: s.title, emoji: s.emoji, color: s.color }))
 
   // Intersection observer for active section
   useEffect(() => {
@@ -220,6 +227,36 @@ export default function DailyContent({ content }: { content: string }) {
       {/* Sticky sidebar */}
       <aside className="daily-sidebar">
         <div className="daily-sidebar-inner">
+          {/* Date tabs */}
+          {tabDates && currentDate && (
+            <div className="daily-date-tabs">
+              {tabDates.map(date => {
+                const isActive = date === currentDate
+                const today = new Date()
+                const yesterday = new Date(Date.now() - 86400000)
+                const dayBefore = new Date(Date.now() - 2 * 86400000)
+                const fmt = (d: Date) => `${d.getMonth() + 1}月${d.getDate()}日`
+                const todayStr = today.toISOString().slice(0, 10)
+                const yestStr = yesterday.toISOString().slice(0, 10)
+                const dayBStr = dayBefore.toISOString().slice(0, 10)
+                let label = fmt(new Date(date))
+                if (date === todayStr) label = '今天'
+                else if (date === yestStr) label = '昨天'
+                else if (date === dayBStr) label = '前天'
+                return (
+                  <Link
+                    key={date}
+                    href={`/daily?date=${date}`}
+                    replace
+                    className={`daily-date-tab ${isActive ? 'active' : ''}`}
+                  >
+                    {label}
+                  </Link>
+                )
+              })}
+            </div>
+          )}
+
           <p className="daily-sidebar-label">导航</p>
           <nav>
             {toc.map(item => (

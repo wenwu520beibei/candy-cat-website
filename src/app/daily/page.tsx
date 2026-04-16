@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { fetchReport, formatDate, getDatesRange } from '@/lib/daily/fetcher'
 import DailyContent from '@/lib/daily/DailyContent'
-import DateTabs from '@/components/DateTabs'
 
 export const metadata: Metadata = {
   title: '每日情报 - BuilderPulse',
@@ -82,9 +81,7 @@ export default async function DailyPage({ searchParams }: PageProps) {
           )}
         </div>
 
-        <DateTabs availableDates={tabDates} currentDate={report.date} />
-
-        <DailyContent content={report.content} />
+        <DailyContent content={report.content} tabDates={tabDates} currentDate={report.date} />
 
         <div className="daily-footer">
           <span>📡 数据来源：BuilderPulse</span>

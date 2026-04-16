@@ -183,6 +183,12 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-sm);
 }
 
+/* 图标模式 - 只显示图标无文字 */
+.nav-icon-only {
+  padding: 8px 12px !important;
+  font-size: 1.1rem !important;
+}
+
 /* ── 下拉菜单 ─────────────────────────────────────────────── */
 .nav-dropdown {
   position: relative;
@@ -781,14 +787,40 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-sm);
 }
 
-.daily-section-title {
-  font-size: 1.3rem;
-  font-weight: 800;
-  margin: 0;
+/* 日期导航 - 侧边栏顶部 */
+.daily-date-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.daily-date-tab {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.daily-date-tab:hover {
+  background: var(--violet-100);
+  color: var(--violet-600);
+}
+
+.daily-date-tab.active {
+  background: var(--violet-500);
+  color: #fff;
+  font-weight: 700;
 }
 
 .daily-sidebar-label {
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -801,9 +833,9 @@ img { max-width: 100%; display: block; }
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border-radius: var(--radius-md);
-  font-size: 0.95rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-secondary);
   text-decoration: none;
@@ -823,7 +855,7 @@ img { max-width: 100%; display: block; }
 }
 
 .daily-sidebar-emoji {
-  font-size: 1rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
@@ -884,13 +916,13 @@ img { max-width: 100%; display: block; }
 
 /* ── 正文排版 ──────────────────────────────────────────── */
 .daily-section-body {
-  font-size: 1.1rem;
-  line-height: 1.85;
-  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-primary);
 }
 
 .daily-h3 {
-  font-size: 1.15rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--text-primary);
   margin: 24px 0 12px;
@@ -975,6 +1007,12 @@ img { max-width: 100%; display: block; }
 
 /* ── 响应式 ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
+  /* 导航栏 - 移动端 */
+  .navbar-brand .brand-text { display: none; }
+  .navbar-nav { gap: 2px; }
+  .nav-icon-only { padding: 8px 10px !important; }
+
+  /* 日报布局 */
   .daily-layout {
     grid-template-columns: 1fr;
   }
@@ -985,12 +1023,21 @@ img { max-width: 100%; display: block; }
   }
   .daily-sidebar-inner {
     display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    padding: 10px 12px;
+    flex-direction: column;
+    gap: 4px;
+    overflow-x: visible;
+    padding: 12px 16px;
   }
+  .daily-date-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .daily-date-tab { font-size: 0.78rem; padding: 5px 10px; }
   .daily-sidebar-label { display: none; }
-  .daily-sidebar-item { flex-shrink: 0; font-size: 0.78rem; }
+  .daily-sidebar-item { flex-shrink: 0; font-size: 0.82rem; }
   .daily-section { padding: 20px; }
 }
 

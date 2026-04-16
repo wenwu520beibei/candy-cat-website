@@ -30,21 +30,18 @@ function Navbar() {
           <span className="brand-text">智能中枢</span>
         </a>
 
-        <nav>
-          <ul className="navbar-nav">
-            <li><a href="/" className="nav-link">🏠 首页</a></li>
-            <li><a href="/daily" className="nav-link">📊 AI日报</a></li>
-            <li><a href="/wechat" className="nav-link">📮 公众号</a></li>
-            <li className="nav-dropdown">
-              <span className="nav-link nav-link-dropdown">👤 我的 ▾</span>
-              <div className="dropdown-menu">
-                <a href="/resume" className="dropdown-item">📄 个人简历</a>
-                <a href="/sources" className="dropdown-item">🔌 信源配置</a>
-                <a href="/reports" className="dropdown-item">📝 日报历史</a>
-                <a href="/settings" className="dropdown-item">⚙️ 系统设置</a>
-              </div>
-            </li>
-          </ul>
+        <nav className="navbar-nav">
+          <a href="/daily" className="nav-link nav-icon-only" title="AI日报">📊</a>
+          <a href="/wechat" className="nav-link nav-icon-only" title="公众号">📮</a>
+          <div className="nav-dropdown">
+            <span className="nav-link nav-icon-only">👤</span>
+            <div className="dropdown-menu">
+              <a href="/resume" className="dropdown-item">📄 个人简历</a>
+              <a href="/sources" className="dropdown-item">🔌 信源配置</a>
+              <a href="/reports" className="dropdown-item">📝 日报历史</a>
+              <a href="/settings" className="dropdown-item">⚙️ 系统设置</a>
+            </div>
+          </div>
         </nav>
       </div>
     </header>
