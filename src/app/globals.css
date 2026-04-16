@@ -607,3 +607,180 @@ img { max-width: 100%; display: block; }
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* ── 日报 /daily 页面 ─────────────────────────────────────── */
+.date-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+}
+.date-tabs::-webkit-scrollbar { display: none; }
+
+.date-tab {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 18px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  text-decoration: none;
+  transition: all 0.2s var(--ease-out);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.date-tab:hover {
+  background: var(--violet-50);
+  border-color: var(--violet-300);
+  color: var(--violet-600);
+}
+.date-tab-active {
+  background: var(--violet-500);
+  border-color: var(--violet-500);
+  color: white;
+  box-shadow: 0 4px 14px rgba(139,92,246,0.30);
+}
+.date-tab-active:hover {
+  background: var(--violet-600);
+  border-color: var(--violet-600);
+  color: white;
+}
+
+.daily-report-wrapper {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.daily-sections {
+  display: flex;
+  flex-direction: column;
+}
+
+.daily-section {
+  padding: 36px 48px;
+  border-bottom: 1px solid var(--border);
+}
+.daily-section:last-child { border-bottom: none; }
+
+.daily-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.daily-section-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.daily-section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.daily-section-body {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.daily-section-body p { margin-bottom: 12px; }
+.daily-section-body p:last-child { margin-bottom: 0; }
+.daily-section-body strong { font-weight: 700; color: var(--violet-700); }
+.daily-section-body em { font-style: italic; color: var(--text-secondary); }
+.daily-section-body code {
+  background: var(--violet-50);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--violet-600);
+}
+.daily-section-body pre {
+  background: #1e1b4b;
+  color: #e2e8f0;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.daily-section-body pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+  font-size: 0.88em;
+}
+.daily-section-body a {
+  color: var(--violet-500);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.daily-section-body a:hover { color: var(--violet-600); }
+.daily-section-body h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 20px 0 10px;
+}
+.daily-section-body h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 16px 0 8px;
+}
+.daily-section-body ul {
+  list-style: none;
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.daily-section-body ul li {
+  position: relative;
+  padding-left: 20px;
+}
+.daily-section-body ul li::before {
+  content: '•';
+  position: absolute;
+  left: 6px;
+  color: var(--violet-400);
+}
+
+/* Fallback indicator */
+.daily-fallback-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(245,158,11,0.08);
+  border-bottom: 1px solid rgba(245,158,11,0.20);
+  font-size: 0.85rem;
+  color: #92400e;
+  font-weight: 500;
+}
+
+.daily-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 16px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Section-specific accent colors */
+.daily-section-signals { border-left: 3px solid var(--violet-400); }
+.daily-section-opportunity { border-left: 3px solid var(--cyan-400); }
+.daily-section-tech { border-left: 3px solid #3b82f6; }
+.daily-section-competitive { border-left: 3px solid var(--pink-400); }
+.daily-section-trends { border-left: 3px solid var(--amber); }
+.daily-section-action { border-left: 3px solid var(--green); }
