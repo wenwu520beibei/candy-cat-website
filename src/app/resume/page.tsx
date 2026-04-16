@@ -1,16 +1,11 @@
-import { promises as fs } from 'fs'
-import path from 'path'
+import ResumeClient from './ResumeClient'
 
-export default async function ResumePage() {
-  const htmlPath = path.join(process.cwd(), 'public', '个人简历.html')
-  const html = await fs.readFile(htmlPath, 'utf-8')
-
+export default function ResumePage() {
   return (
-    <main style={{ minHeight: '100vh' }}>
-      <iframe
-        src="/个人简历.html"
-        style={{ width: '100%', height: '100vh', border: 'none' }}
-        title="个人简历"
+    <main className="resume-page">
+      <ResumeClient
+        name="蒋文武"
+        title="智能化部算法团队负责人 · AI与电池工程化融合"
       />
     </main>
   )

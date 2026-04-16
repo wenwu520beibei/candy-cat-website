@@ -4,7 +4,10 @@ import './globals.css'
 export const metadata: Metadata = {
   title: '智能情报与内容中枢',
   description: 'AI日报 · 多源情报聚合 · 每日更新',
-  icons: { icon: '📊' },
+  icons: {
+    icon: '/favicon.svg',
+    apple: '/apple-touch-icon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
