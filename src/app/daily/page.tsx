@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { fetchReport, formatDate, getDatesRange } from '@/lib/daily/fetcher'
-import BuilderPulseRenderer from '@/lib/daily/renderer'
+import DailyContent from '@/lib/daily/DailyContent'
 import DateTabs from '@/components/DateTabs'
 
 export const metadata: Metadata = {
@@ -16,10 +16,8 @@ export default async function DailyPage({ searchParams }: PageProps) {
   const params = await searchParams
   const today = formatDate(new Date())
 
-  // Determine which date to show
   let targetDate = params.date || today
 
-  // Validate date format
   if (!/^\d{4}-\d{2}-\d{2}$/.test(targetDate)) {
     targetDate = today
   }
@@ -27,13 +25,11 @@ export default async function DailyPage({ searchParams }: PageProps) {
   let report: { date: string; content: string; fetchedAt: string } | null = null
   let isFallback = false
 
-  // Try today's date first
   const { content: todayContent, found: todayFound } = await fetchReport(targetDate)
 
   if (todayFound && todayContent) {
     report = { date: targetDate, content: todayContent, fetchedAt: new Date().toISOString() }
   } else {
-    // Today not found — try yesterday, then day before, up to 6 days back
     const dates = getDatesRange(7).filter(d => d !== targetDate)
     for (const d of dates) {
       const { content: c, found: f } = await fetchReport(d)
@@ -45,7 +41,6 @@ export default async function DailyPage({ searchParams }: PageProps) {
     }
   }
 
-  // Generate available dates for tabs (today + last 6 days)
   const tabDates = getDatesRange(7)
 
   if (!report) {
@@ -89,9 +84,7 @@ export default async function DailyPage({ searchParams }: PageProps) {
 
         <DateTabs availableDates={tabDates} currentDate={report.date} />
 
-        <div className="daily-report-wrapper">
-          <BuilderPulseRenderer content={report.content} />
-        </div>
+        <DailyContent content={report.content} />
 
         <div className="daily-footer">
           <span>📡 数据来源：BuilderPulse</span>

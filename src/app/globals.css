@@ -753,17 +753,236 @@ img { max-width: 100%; display: block; }
   color: var(--violet-400);
 }
 
-/* Fallback indicator */
-.daily-fallback-banner {
+/* ── 日报页布局 ─────────────────────────────────────────────── */
+.daily-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+/* ── 侧边栏 ──────────────────────────────────────────────── */
+.daily-sidebar {
+  position: sticky;
+  top: 80px;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.daily-sidebar-inner {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.daily-sidebar-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  padding: 0 8px;
+}
+
+.daily-sidebar-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 9px 10px;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.18s var(--ease-out);
+  margin-bottom: 2px;
+}
+
+.daily-sidebar-item:hover {
+  background: var(--violet-50);
+  color: var(--accent, var(--violet-500));
+}
+
+.daily-sidebar-item.active {
+  background: rgba(139,92,246,0.08);
+  color: var(--accent, var(--violet-500));
+  font-weight: 700;
+}
+
+.daily-sidebar-emoji {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.daily-sidebar-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── 正文 ──────────────────────────────────────────────── */
+.daily-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── 板块 ──────────────────────────────────────────────── */
+.daily-section {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-sm);
+  scroll-margin-top: 90px;
+  transition: box-shadow 0.2s;
+}
+
+.daily-section:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.daily-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1.5px solid var(--border);
+}
+
+.daily-section-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.daily-section-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+/* ── 正文排版 ──────────────────────────────────────────── */
+.daily-section-body {
+  font-size: 0.88rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.daily-h3 {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 20px 0 10px;
+  padding: 0;
+}
+
+.daily-p {
+  margin: 0 0 10px;
+  line-height: 1.8;
+}
+
+.daily-p:last-child { margin-bottom: 0; }
+
+.daily-list {
+  margin: 8px 0 14px;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.daily-list li {
+  line-height: 1.7;
+  color: var(--text-secondary);
+  list-style-type: disc;
+}
+
+.daily-list ol {
+  margin: 8px 0 14px;
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.daily-list ol li {
+  list-style-type: decimal;
+}
+
+.daily-blockquote {
+  margin: 10px 0;
   padding: 10px 16px;
-  background: rgba(245,158,11,0.08);
-  border-bottom: 1px solid rgba(245,158,11,0.20);
+  background: var(--violet-50);
+  border-left: 3px solid var(--violet-300);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   font-size: 0.85rem;
-  color: #92400e;
-  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.daily-takeaway {
+  margin: 14px 0 6px;
+  padding: 10px 14px;
+  background: rgba(139,92,246,0.06);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--violet-600);
+  border: 1px solid rgba(139,92,246,0.12);
+}
+
+.daily-inline-code {
+  background: var(--violet-50);
+  border: 1px solid var(--violet-200);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 0.8rem;
+  font-family: 'Fira Code', monospace;
+  color: var(--violet-600);
+}
+
+.daily-link {
+  color: var(--violet-500);
+  text-decoration: underline;
+  text-decoration-color: rgba(139,92,246,0.3);
+  text-underline-offset: 2px;
+}
+
+.daily-link:hover {
+  color: var(--violet-600);
+  text-decoration-color: var(--violet-400);
+}
+
+/* ── 响应式 ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .daily-layout {
+    grid-template-columns: 1fr;
+  }
+  .daily-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .daily-sidebar-inner {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 10px 12px;
+  }
+  .daily-sidebar-label { display: none; }
+  .daily-sidebar-item { flex-shrink: 0; font-size: 0.78rem; }
+  .daily-section { padding: 20px; }
 }
 
 .daily-footer {
@@ -771,19 +990,11 @@ img { max-width: 100%; display: block; }
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 28px;
   padding: 16px;
   font-size: 0.78rem;
   color: var(--text-muted);
 }
-
-/* Section-specific accent colors */
-.daily-section-signals { border-left: 3px solid var(--violet-400); }
-.daily-section-opportunity { border-left: 3px solid var(--cyan-400); }
-.daily-section-tech { border-left: 3px solid #3b82f6; }
-.daily-section-competitive { border-left: 3px solid var(--pink-400); }
-.daily-section-trends { border-left: 3px solid var(--amber); }
-.daily-section-action { border-left: 3px solid var(--green); }
 
 /* ── 简历页 ─────────────────────────────────────────────────── */
 .resume-page {
