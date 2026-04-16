@@ -11,51 +11,105 @@ const SECTIONS = [
   { key: 'action',     title: '行动触发',        emoji: '⚡', color: 'var(--green)'     },
 ]
 
+interface Section {
+  key: string
+  title: string
+  emoji: string
+  color: string
+  content: string[]
+}
+
 interface TocItem { id: string; title: string; emoji: string; color: string }
 
 // Parse raw markdown into structured sections
-function parseSections(content: string) {
+function parseSections(content: string): Section[] {
   const lines = content.split('\n')
-  const sections: { key: string; content: string[] }[] = []
-  let current: { key: string; content: string[] } | null = null
+  const sections: Section[] = []
+  let current: Section | null = null
+
+  // Intro lines collected before any ## section
+  const introLines: string[] = []
+  // Signals blockquotes
+  const signalLines: string[] = []
+  let inIntro = true
+  let sawFirstHR = false
 
   for (const line of lines) {
     // Skip top-level title
     if (line.startsWith('# BuilderPulse')) continue
 
-    // Skip blockquote that acts as summary
-    if (line.startsWith('> **今日三大信号**')) continue
-    if (line.startsWith('> 1.') && !current) continue
-    if (line.startsWith('> 2.') || line.startsWith('> 3.')) continue
+    // Capture signals blockquotes ("> **今日三大信号**：", "> 1.", "> 2.", "> 3.")
+    if (line.startsWith('> **今日三大信号')) {
+      // Extract text after the bold label
+      const m = line.match(/^>\s*\*\*今日三大信号[：:]\*\*\s*(.*)/)
+      if (m && m[1]) signalLines.push(m[1].trim())
+      continue
+    }
+    if (line.startsWith('> ')) {
+      const stripped = line.replace(/^>\s*/, '')
+      if (stripped.match(/^[123]\.\s/)) {
+        signalLines.push(stripped)
+      } else if (stripped && !stripped.includes('交叉参考') && !stripped.includes('更新于')) {
+        introLines.push(line)
+      }
+      continue
+    }
 
     // Skip update line
     if (line.includes('交叉参考') || line.includes('更新于')) continue
 
-    // Horizontal rule = section separator (skip, not a section marker)
-    if (line.trim() === '---') continue
+    // First HR marks end of intro / signals
+    if (line.trim() === '---') { inIntro = false; sawFirstHR = true; continue }
 
     // Section header: ## 发现机会, ## 技术选型 etc.
     const sectionMatch = line.match(/^## (.+)/)
     if (sectionMatch) {
+      inIntro = false
       const title = sectionMatch[1].trim()
-      const sec = SECTIONS.find(s => s.title === title)
-      if (sec) {
-        current = { key: sec.key, content: [] }
+      const meta = SECTIONS.find(s => s.title === title)
+      if (meta) {
+        current = { key: meta.key, title: meta.title, emoji: meta.emoji, color: meta.color, content: [] }
         sections.push(current)
-        continue
       }
+      continue
     }
 
     if (current) {
       current.content.push(line)
+    } else if (inIntro) {
+      introLines.push(line)
     }
   }
 
+  // Build signals section
+  const signalsSection: Section = {
+    key: 'signals',
+    title: '今日三大信号',
+    emoji: '🚨',
+    color: 'var(--violet-500)',
+    content: signalLines,
+  }
+
+  // If we have intro content and a "发现机会" section, prepend intro to it
+  if (introLines.length > 0) {
+    const oppSection = sections.find(s => s.key === 'opportunity')
+    if (oppSection) {
+      oppSection.content = [...introLines, ...oppSection.content]
+    } else if (sections.length > 0) {
+      sections[0].content = [...introLines, ...sections[0].content]
+    }
+  }
+
+  // Only include signals if it has content
+  if (signalLines.length > 0) {
+    return [signalsSection, ...sections]
+  }
   return sections
 }
 
 // Convert one section's markdown lines to HTML
 function renderLines(lines: string[]): string {
+  if (lines.length === 0) return ''
   const parts: string[] = []
   let i = 0
 
@@ -133,10 +187,13 @@ export default function DailyContent({ content }: { content: string }) {
   const [activeId, setActiveId] = useState('signals')
   const observerRef = useRef<IntersectionObserver | null>(null)
 
-  // Build TOC
-  const toc: TocItem[] = SECTIONS
-    .filter(s => sections.some(sec => sec.key === s.key))
-    .map(s => ({ id: s.key, title: s.title, emoji: s.emoji, color: s.color }))
+  // Build TOC — always include signals, then add whatever sections exist
+  const toc: TocItem[] = [
+    { id: 'signals', title: '今日三大信号', emoji: '🚨', color: 'var(--violet-500)' },
+    ...SECTIONS
+      .filter(s => sections.some(sec => sec.key === s.key))
+      .map(s => ({ id: s.key, title: s.title, emoji: s.emoji, color: s.color })),
+  ]
 
   // Intersection observer for active section
   useEffect(() => {

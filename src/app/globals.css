@@ -760,6 +760,9 @@ img { max-width: 100%; display: block; }
   gap: 28px;
   align-items: start;
   margin-top: 8px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ── 侧边栏 ──────────────────────────────────────────────── */
@@ -875,22 +878,22 @@ img { max-width: 100%; display: block; }
 
 /* ── 正文排版 ──────────────────────────────────────────── */
 .daily-section-body {
-  font-size: 0.88rem;
-  line-height: 1.8;
+  font-size: 0.95rem;
+  line-height: 1.85;
   color: var(--text-secondary);
 }
 
 .daily-h3 {
-  font-size: 0.92rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin: 20px 0 10px;
+  margin: 22px 0 10px;
   padding: 0;
 }
 
 .daily-p {
-  margin: 0 0 10px;
-  line-height: 1.8;
+  margin: 0 0 12px;
+  line-height: 1.85;
 }
 
 .daily-p:last-child { margin-bottom: 0; }
